@@ -45,6 +45,7 @@ import java.util.List;
 
 /**
  * Created by Chatitze Moumin on 17/11/14.
+ *
  */
 
 public class CoffeeShopListActivity extends AppCompatActivity {
