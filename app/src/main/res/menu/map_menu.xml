@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.chatitzemoumin.londoncoffeeapp.CoffeeShopListActivity" >
+
+
+    <!-- List icon will be displayed always -->
+    <item android:id="@+id/action_map_list"
+        android:icon="@drawable/ic_action_list"
+        app:showAsAction="ifRoom"
+        android:title="@string/show_list_menu"/>
+
+    <item
+        android:id="@+id/clear_cache"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="never"
+        android:title="@string/clear_cache_menu"/>
+
+</menu>

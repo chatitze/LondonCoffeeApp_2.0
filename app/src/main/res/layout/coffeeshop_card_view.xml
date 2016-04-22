@@ -1,0 +1,104 @@
+<!-- A CardView -->
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardCornerRadius="3dp"
+    android:layout_margin="4dp">
+
+    <ImageView
+        android:id="@+id/coffeeshop_image"
+        android:contentDescription="@string/imageview_description"
+        android:layout_height="@dimen/image_venue_height"
+        android:layout_width="match_parent"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="top">
+
+        <!--
+        <ImageView
+            android:id="@+id/coffeeshop_map"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/map_blackcircle"
+            android:layout_margin="5dp"/>
+        -->
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/heart_image"
+            android:contentDescription="@string/imageview_description"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/heart"/>
+
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/gradient_drawable"
+        android:layout_gravity="bottom">
+
+
+        <TextView
+            android:id="@+id/coffeeshop_address"
+            android:textSize="@dimen/venue_address_size"
+            android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="6dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            />
+
+        <TextView
+            android:id="@+id/coffeeshop_name"
+            android:textSize="@dimen/venue_name_size"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/coffeeshop_address"
+            android:layout_marginLeft="8dp"
+            />
+       <TextView
+           android:id="@+id/coffeeshop_distance"
+           android:textSize="16sp"
+           android:textStyle="bold"
+           android:textColor="#ffffff"
+           android:layout_height="wrap_content"
+           android:layout_width="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:layout_alignParentRight="true"
+           android:layout_marginRight="6dp"
+           android:layout_marginBottom="6dp"
+           />
+        <!--
+        <ImageView
+            android:id="@+id/coffeeshop_map2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/pin"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="6dp"/>
+-->
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+
+

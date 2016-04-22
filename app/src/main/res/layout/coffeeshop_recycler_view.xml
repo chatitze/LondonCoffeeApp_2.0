@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/listView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="3dp"
+            android:background="#FFFFFF"
+            android:divider="@null"
+            android:dividerHeight="3dp" />
+-->
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.chatitzemoumin.londoncoffeeapp.ui.CoffeeShopListActivity" >
+
+
+    <!-- A RecyclerView with some commonly used attributes -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</RelativeLayout>
+
+
+
+<!--
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.chatitzemoumin.londoncoffeeapp.ui.CoffeeShopListActivity">
+
+<com.chatitzemoumin.londoncoffeeapp.slidinguppanel.SlidingUpPanelLayout
+    android:id="@+id/slidingLayout"
+    android:gravity="bottom"
+    app:shadowHeight="0dp"
+    app:paralaxOffset="@dimen/paralax_offset"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    &lt;!&ndash; Map area &ndash;&gt;
+    <FrameLayout
+        android:gravity="top"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:id="@+id/mapContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
+    </FrameLayout>
+
+    &lt;!&ndash; List area &ndash;&gt;
+    <RelativeLayout
+        android:id="@+id/slidingContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <View
+            android:id="@+id/transparentView"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/map_height"
+            android:layout_alignParentTop="true"/>
+
+        &lt;!&ndash; @dimen/map_height &ndash;&gt;
+        &lt;!&ndash;
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="@android:color/white"
+            android:drawSelectorOnTop="true"
+            android:dividerHeight="@dimen/divider_height"
+            android:divider="@android:color/darker_gray"
+            android:background="@android:color/transparent"
+            android:layout_below="@id/transparentView"
+            android:smoothScrollbar="false"/>
+        &ndash;&gt;
+
+        &lt;!&ndash; A RecyclerView with some commonly used attributes &ndash;&gt;
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:cacheColorHint="@android:color/white"
+            android:drawSelectorOnTop="true"
+            android:divider="@android:color/darker_gray"
+            android:background="@android:color/transparent"
+            android:layout_below="@id/transparentView"
+            android:smoothScrollbar="false" />
+
+    </RelativeLayout>
+</com.chatitzemoumin.londoncoffeeapp.slidinguppanel.SlidingUpPanelLayout>
+
+&lt;!&ndash; more code here &ndash;&gt;
+</RelativeLayout>-->
