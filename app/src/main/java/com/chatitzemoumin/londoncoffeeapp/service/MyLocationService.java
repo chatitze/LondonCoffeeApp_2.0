@@ -1,17 +1,13 @@
 package com.chatitzemoumin.londoncoffeeapp.service;
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -19,13 +15,9 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by Chatitze Moumin on 05/01/15.
  */
-public class MyLocationService extends Service implements LocationListener, ActivityCompat.OnRequestPermissionsResultCallback  {
-
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+public class MyLocationService extends Service implements LocationListener {
 
     private final Context mContext;
-
-    private boolean isLocationPermissionGranted = false;
 
     //flag for GPS Status
     boolean isGPSEnabled = false;
@@ -52,104 +44,70 @@ public class MyLocationService extends Service implements LocationListener, Acti
 
     public MyLocationService(Context context){
         this.mContext = context;
-        //checkPermission();
-        //getLocation();
+        getLocation();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                    isLocationPermissionGranted = true;
-
-                    getLocation();
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
-    private Location getLocation()
+    public Location getLocation()
     {
-        if(mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            try
+        try
+        {
+            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+
+            //getting GPS status
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            //getting network status
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled)
             {
-                locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+                // no network provider is enabled
+            }
+            else
+            {
+                this.canGetLocation = true;
 
-                //getting GPS status
-                isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-                //getting network status
-                isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-                if (!isGPSEnabled && !isNetworkEnabled)
+                //First get location from Network Provider
+                if (isNetworkEnabled)
                 {
-                    // no network provider is enabled
-                }
-                else
-                {
-                    this.canGetLocation = true;
+                    locationManager.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER,
+                            MIN_TIME_BW_UPDATES,
+                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-                    //First get location from Network Provider
-                    if (isNetworkEnabled)
+                    Log.d("Network", "Network");
+
+                    if (locationManager != null)
                     {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        updateGPSCoordinates();
+                    }
+                }
 
+                //if GPS Enabled get lat/long using GPS Services
+                if (isGPSEnabled)
+                {
+                    if (location == null)
+                    {
                         locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,
+                                LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-                        Log.d("Network", "Network");
+                        Log.d("GPS Enabled", "GPS Enabled");
 
                         if (locationManager != null)
                         {
-                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             updateGPSCoordinates();
-                        }
-                    }
-
-                    //if GPS Enabled get lat/long using GPS Services
-                    if (isGPSEnabled)
-                    {
-                        if (location == null)
-                        {
-                            locationManager.requestLocationUpdates(
-                                    LocationManager.GPS_PROVIDER,
-                                    MIN_TIME_BW_UPDATES,
-                                    MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-
-                            Log.d("GPS Enabled", "GPS Enabled");
-
-                            if (locationManager != null)
-                            {
-                                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                updateGPSCoordinates();
-                            }
                         }
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Log.e("Error : Location", "Impossible to connect to LocationManager", e);
-            }
+        }
+        catch (Exception e)
+        {
+            Log.e("Error : Location", "Impossible to connect to LocationManager", e);
         }
 
         return location;
@@ -171,7 +129,7 @@ public class MyLocationService extends Service implements LocationListener, Acti
 
     public void stopUsingGPS()
     {
-        if (locationManager != null && mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        if (locationManager != null)
         {
             locationManager.removeUpdates(MyLocationService.this);
         }

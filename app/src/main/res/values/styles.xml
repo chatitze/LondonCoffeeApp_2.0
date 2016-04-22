@@ -1,28 +1,39 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-<!--
-
-    Theme.AppCompat.Light.NoActionBar
--->
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
+    <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#202020</item>
+        <item name="colorPrimaryDark">#101010</item>
+        <!--<item name="colorPrimary">#ffff9431</item>
+        <item name="colorPrimaryDark">#ffD56600</item>-->
     </style>
+    <!--
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#202020</item>
+        <item name="colorPrimaryDark">#101010</item>
+        &lt;!&ndash;<item name="colorPrimary">#ffff9431</item>
+        <item name="colorPrimaryDark">#ffD56600</item>&ndash;&gt;
+    </style>
+    -->
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme" parent="AppBaseTheme"/>
 
     <!-- <style name="AppTheme" parent="android:Theme" /> -->
-    <!--<style name="AppTheme.FullScreen" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen" />-->
-    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.NoActionBar" />
+    <style name="AppTheme.FullScreen" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+    <style name="PhotoGridLayout">
+        <item name="android:drawSelectorOnTop">true</item>
+        <item name="android:listSelector">@drawable/photogrid_list_selector</item>
+    </style>
+
+    <style name="ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:displayOptions">homeAsUp</item>
+    </style>
+
+
+
+
 
 </resources>

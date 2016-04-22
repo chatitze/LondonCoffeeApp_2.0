@@ -165,10 +165,10 @@ public class ImageFetcher extends ImageResizer {
     }
 
     /**
-     * Simple network connection check.
-     *
-     * @param context
-     */
+    * Simple network connection check.
+    *
+    * @param context
+    */
     private void checkConnection(Context context) {
         final ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

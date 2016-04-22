@@ -1,26 +1,22 @@
 package com.chatitzemoumin.londoncoffeeapp.ui;
 
-import android.Manifest;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -28,13 +24,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chatitzemoumin.londoncoffeeapp.BuildConfig;
 import com.chatitzemoumin.londoncoffeeapp.R;
 import com.chatitzemoumin.londoncoffeeapp.model.CoffeeShop;
 import com.chatitzemoumin.londoncoffeeapp.service.MyLocationService;
 import com.chatitzemoumin.londoncoffeeapp.tasks.CoffeeShopFetcher;
+import com.chatitzemoumin.londoncoffeeapp.util.ImageCache;
 import com.chatitzemoumin.londoncoffeeapp.util.ImageFetcher;
 import com.chatitzemoumin.londoncoffeeapp.util.PlatformUtils;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -45,43 +53,94 @@ import java.util.List;
 
 /**
  * Created by Chatitze Moumin on 17/11/14.
- *
  */
 
 public class CoffeeShopListActivity extends AppCompatActivity {
 
     private static final String TAG = "CoffeeShopListActivity";
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final String IMAGE_CACHE_DIR = "CoffeeVenues";
 
     private MyLocationService myLocationService;
     private List<CoffeeShop> coffeeShopList;
-
-
-    private ImageFetcher mImageFetcher;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private int mVenueImageSize;
+    private ImageFetcher mImageFetcher;
+
+    private SlidingUpPanelLayout mSlidingUpPanelLayout;
+
+    private MapFragment mMapFragment;
+    private GoogleMap mMap;
+
+    private static final LatLng HOLBORN = new LatLng(51.517580, -0.120450);
+
+    // ------- library -------
+    private ImageLoader mImageLoader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             PlatformUtils.enableStrictMode();
-        }*/
+        }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coffee_shop_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        // ------------------ Sliding Up Panel ---------------
+        setContentView(R.layout.slidingup_panel_view);
+        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        mSlidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
+        mSlidingUpPanelLayout.setPanelState(PanelState.COLLAPSED);
+        mSlidingUpPanelLayout.setPanelSlideListener(new PanelSlideListener() {
+            TextView t = (TextView) findViewById(R.id.expand_collapse_text);
+            ImageView imageView = (ImageView) findViewById(R.id.expand_collapse_icon);
+
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
+            }
+
+            @Override
+            public void onPanelExpanded(View panel) {
+                Log.i(TAG, "onPanelExpanded");
+                t.setText(Html.fromHtml(getString(R.string.action_collapse)));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_collapse));
+
+            }
+
+            @Override
+            public void onPanelCollapsed(View panel) {
+                Log.i(TAG, "onPanelCollapsed");
+                t.setText(Html.fromHtml(getString(R.string.action_expand)));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand));
+
+            }
+
+            @Override
+            public void onPanelAnchored(View panel) {
+                Log.i(TAG, "onPanelAnchored");
+                t.setText(Html.fromHtml(getString(R.string.action_collapse)));
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_collapse));
+            }
+
+            @Override
+            public void onPanelHidden(View panel) {
+                Log.i(TAG, "onPanelHidden");
             }
         });
 
+
+        TextView t = (TextView) findViewById(R.id.expand_collapse_text);
+        t.setText(Html.fromHtml(getString(R.string.action_expand)));
+
+        ImageView imageView = (ImageView) findViewById(R.id.expand_collapse_icon);
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand));
+
+        // ------------------ Sliding Up Panel END ---------------
 
         // create location service
         myLocationService = new MyLocationService(this);
@@ -96,35 +155,142 @@ public class CoffeeShopListActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        checkPermission();
+        // create memory cache parameters
+        ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getApplicationContext(), IMAGE_CACHE_DIR);
+        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+
+        // The ImageFetcher takes care of loading images into our ImageView children asynchronously
+        mImageFetcher = new ImageFetcher(getApplicationContext(), mVenueImageSize);
+        mImageFetcher.setLoadingImage(R.drawable.place_holder_bitmap);
+        mImageFetcher.addImageCache(getSupportFragmentManager(), cacheParams);
+
+        mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        //mMapFragment = SupportMapFragment.newInstance();
+        GoogleMap map = mMapFragment.getMap();
+        mMap = map;
+        CameraPosition cameraPosition = new CameraPosition.Builder().
+                target(HOLBORN).
+                zoom(11).tilt(30).build();
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        map.setMyLocationEnabled(true);
+        map.setIndoorEnabled(true);
 
         // create coffee shop fetcher in order to load the coffee shop list data
         CoffeeShopFetcher fetcher = new CoffeeShopFetcher(this);
         fetcher.execute();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(null != mImageFetcher){
+            mImageFetcher.setExitTasksEarly(false);
+
+        }
+        if(null != mAdapter){
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.setPauseWork(false);
+        mImageFetcher.setExitTasksEarly(true);
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_list, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_toggle);
+        if (mSlidingUpPanelLayout != null) {
+            if (mSlidingUpPanelLayout.getPanelState() == PanelState.HIDDEN) {
+                item.setTitle(R.string.action_show);
+            } else {
+                item.setTitle(R.string.action_hide);
+            }
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.clear_cache:
                 mImageFetcher.clearCache();
                 Toast.makeText(getApplicationContext(), R.string.clear_cache_complete_toast,
                         Toast.LENGTH_SHORT).show();
                 return true;
-        }
+            case R.id.action_map_list:
+                final Intent intent = new Intent(getApplicationContext(), CoffeeShopMapActivity.class);
+                intent.putParcelableArrayListExtra(CoffeeShopDetailActivity.COFFEE_SHOP_LIST, (ArrayList<CoffeeShop>)coffeeShopList);
 
+                if (PlatformUtils.hasJellyBean()) {
+                    View currentView = this.findViewById(android.R.id.content);
+                    ActivityOptions options =
+                            ActivityOptions.makeScaleUpAnimation(currentView, 0, 0, currentView.getWidth(), currentView.getHeight());
+                    this.startActivity(intent, options.toBundle());
+                } else {
+                    startActivity(intent);
+                }
+                break;
+
+            case R.id.action_toggle:
+                if (mSlidingUpPanelLayout != null) {
+                    if (mSlidingUpPanelLayout.getPanelState() != PanelState.HIDDEN) {
+                        mSlidingUpPanelLayout.setPanelState(PanelState.HIDDEN);
+                        item.setTitle(R.string.action_show);
+                    } else {
+                        mSlidingUpPanelLayout.setPanelState(PanelState.COLLAPSED);
+                        item.setTitle(R.string.action_hide);
+                    }
+                }
+                break;
+
+            case R.id.action_anchor:
+                if (mSlidingUpPanelLayout != null) {
+                    if (mSlidingUpPanelLayout.getAnchorPoint() == 1.0f) {
+                        mSlidingUpPanelLayout.setAnchorPoint(0.6f);
+                        mSlidingUpPanelLayout.setPanelState(PanelState.ANCHORED);
+                        item.setTitle(R.string.action_anchor_disable);
+                    } else {
+                        mSlidingUpPanelLayout.setAnchorPoint(1.0f);
+                        mSlidingUpPanelLayout.setPanelState(PanelState.COLLAPSED);
+                        item.setTitle(R.string.action_anchor_enable);
+                    }
+                }
+                break;
+
+        }
         return super.onOptionsItemSelected(item);
+
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mSlidingUpPanelLayout != null &&
+                (mSlidingUpPanelLayout.getPanelState() == PanelState.EXPANDED || mSlidingUpPanelLayout.getPanelState() == PanelState.ANCHORED)) {
+            mSlidingUpPanelLayout.setPanelState(PanelState.COLLAPSED);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     private void sortByDistance(LatLng latLng){
         if(latLng != null){
@@ -138,7 +304,6 @@ public class CoffeeShopListActivity extends AppCompatActivity {
             Collections.sort(coffeeShopList, new Comparator<CoffeeShop>() {
                 @Override
                 public int compare(CoffeeShop shop1, CoffeeShop shop2) {
-
                     return (int) (shop1.getDistance() - shop2.getDistance());
                 }
             });
@@ -167,52 +332,6 @@ public class CoffeeShopListActivity extends AppCompatActivity {
         return result;
     }
 
-    private void checkPermission(){
-
-        // Check if the Location permission is already available.
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-                // Location  permission has not been granted.
-
-            /**
-             * Requests the Location permission.
-             * If the permission has been denied previously, a SnackBar will prompt the user to grant the
-             * permission, otherwise it is requested directly.
-             */
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-                Snackbar.make(findViewById(android.R.id.content), R.string.permission_location_request,
-                        Snackbar.LENGTH_INDEFINITE)
-                        .setAction("OK", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ActivityCompat.requestPermissions(CoffeeShopListActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-                            }
-                        })
-                        .show();
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
-    }
-
     public void handleCoffeeShopList(final List<CoffeeShop> coffeeShopList) {
         this.coffeeShopList = coffeeShopList;
 
@@ -224,15 +343,12 @@ public class CoffeeShopListActivity extends AppCompatActivity {
                     // sort the venues through distance of users location
                     sortByDistance(new LatLng(myLocationService.getLatitude(), myLocationService.getLongitude()));
                 }
-
                 // specify the adapter
                 mAdapter = new CardViewAdapter(getApplication(), coffeeShopList);
                 mRecyclerView.setAdapter(mAdapter);
 
-//                mImageFetcher.setImageSize(mRecyclerView.getWidth(), (int) (mRecyclerView.getWidth() / 2));
+                mImageFetcher.setImageSize(mRecyclerView.getWidth(), (int) (mRecyclerView.getWidth() / 2));
 
-
-                /*
 
                 // set markers on map
                 for(int i=0; i<coffeeShopList.size(); i++){
@@ -268,7 +384,6 @@ public class CoffeeShopListActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
-                */
             }
 
         });
@@ -278,7 +393,7 @@ public class CoffeeShopListActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(CoffeeShopListActivity.this, "Failed to load Coffee Shops. Have a look at LogCat.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoffeeShopListActivity.this, "Failed to load Coffee Shops. Have a look at LogCat.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -331,7 +446,7 @@ public class CoffeeShopListActivity extends AppCompatActivity {
 
             // create a new view
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.card_view_coffee_shop, parent, false);
+                    .inflate(R.layout.coffeeshop_card_view, parent, false);
 
             CoffeeShopViewHolder vh = new CoffeeShopViewHolder(itemView);
 
@@ -346,20 +461,28 @@ public class CoffeeShopListActivity extends AppCompatActivity {
 
                 // - get element from your data set at this position
                 // - replace the contents of the view with that element
+
+                double distanceFrom = mCoffeeShopList.get(position).getDistance();
+                if(distanceFrom > 0)
+                    ((CoffeeShopViewHolder)holder).mCoffeeShopDistance.setText(formatDistance(distanceFrom));
+                else
+                    ((CoffeeShopViewHolder)holder).mCoffeeShopDistance.setVisibility(View.GONE);
+
+                // --- Hide the HEART image for now as iy's not used ---
+                ((CoffeeShopViewHolder)holder).mHeartImageView.setVisibility(View.GONE);
+
                 ((CoffeeShopViewHolder)holder).mCoffeeShopAddress.setText(mCoffeeShopList.get(position).getAddress());
                 ((CoffeeShopViewHolder)holder).mCoffeeShopName.setText(mCoffeeShopList.get(position).getName());
-                ((CoffeeShopViewHolder)holder).mCoffeeShopDistance.setText(formatDistance(mCoffeeShopList.get(position).getDistance()));
                 ((CoffeeShopViewHolder)holder).mCoffeeShopView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-//                mImageFetcher.setImageSize((int)(mRecyclerView.getWidth()/2));
+                mImageFetcher.setImageSize((int)(mRecyclerView.getWidth()/2));
 
                 // Finally load the image asynchronously into the ImageView, this also takes care of
                 // setting a placeholder image while the background thread runs
-                // mImageFetcher.loadImage(mCoffeeShopList.get(position).getVenueUrl(), ((CoffeeShopViewHolder)holder).mCoffeeShopView);
+                //mImageFetcher.loadImage(mCoffeeShopList.get(position).getVenueUrl(), ((CoffeeShopViewHolder)holder).mCoffeeShopView);
 
 
                 // -------------------------------- library -----------------------------
-
                 Picasso.with(CoffeeShopListActivity.this)
                         .load(mCoffeeShopList.get(position).getVenueUrl())
                         .placeholder(R.drawable.place_holder_bitmap) // optional
@@ -371,10 +494,6 @@ public class CoffeeShopListActivity extends AppCompatActivity {
                 // -------------------------------- library -----------------------------
 
                 //mImageLoader.displayImage(mCoffeeShopList.get(position).getVenueUrl(),((CoffeeShopViewHolder)holder).mCoffeeShopView);
-
-
-
-
 
                 // Here apply the animation when the view is bound
                 setAnimation(((CoffeeShopViewHolder)holder).mContainer, position);
@@ -444,6 +563,7 @@ public class CoffeeShopListActivity extends AppCompatActivity {
         protected TextView mCoffeeShopAddress;
         protected TextView mCoffeeShopDistance;
         protected CardView mContainer;
+        protected ImageView mHeartImageView;
 
         public CoffeeShopViewHolder(View v) {
             super(v);
@@ -453,6 +573,7 @@ public class CoffeeShopListActivity extends AppCompatActivity {
             mCoffeeShopAddress = (TextView) v.findViewById(R.id.coffeeshop_address);
             mCoffeeShopDistance = (TextView) v.findViewById(R.id.coffeeshop_distance);
             mContainer = (CardView) v.findViewById(R.id.card_view);
+            mHeartImageView = (ImageView) v.findViewById(R.id.heart_image);
 
             v.setOnClickListener(this);
         }
@@ -472,5 +593,4 @@ public class CoffeeShopListActivity extends AppCompatActivity {
             }
         }
     }
-
 }

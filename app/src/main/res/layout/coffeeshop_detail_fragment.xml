@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fffff6">
+
+<RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#fffff6">
@@ -43,133 +50,123 @@
         android:layout_margin="15dp"
         android:layout_alignTop="@+id/imageView"
         android:layout_alignRight="@+id/imageView"
-        android:background="@mipmap/heart"
+        android:background="@drawable/heart"
         />
 
-    <ScrollView
-        android:id="@+id/ScrollView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/coffeeshop_comment"
         android:layout_below="@+id/imageView"
-        android:background="#fffff6">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="italic"
+        android:textSize="@dimen/venue_address_size"
+        android:textColor="@android:color/black"/>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+    <View
+        android:layout_width="fill_parent"
+        android:id="@+id/vertical_line"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:rotation="180"
+        android:background="@android:color/black"
+        android:layout_below="@+id/coffeeshop_comment"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/coffeeshop_comment"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:textStyle="italic"
-                android:textSize="@dimen/venue_address_size"
-                android:textColor="@android:color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/coffeeshop_openingHours"
+        android:layout_below="@+id/vertical_line"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:textSize="@dimen/venue_address_size"
+        android:textColor="@android:color/black"/>
 
-            <View
-                android:layout_width="fill_parent"
-                android:id="@+id/vertical_line"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:rotation="180"
-                android:background="@android:color/black"
-                android:layout_below="@+id/coffeeshop_comment"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+    <View
+        android:layout_width="fill_parent"
+        android:id="@+id/vertical_line2"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:rotation="180"
+        android:background="@android:color/black"
+        android:layout_below="@+id/coffeeshop_openingHours"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/coffeeshop_openingHours"
-                android:layout_below="@+id/vertical_line"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:textSize="@dimen/venue_address_size"
-                android:textColor="@android:color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/coffeeshop_phone"
+        android:layout_below="@+id/vertical_line2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:textSize="@dimen/venue_address_size"
+        android:textColor="@android:color/black"/>
 
-            <View
-                android:layout_width="fill_parent"
-                android:id="@+id/vertical_line2"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:rotation="180"
-                android:background="@android:color/black"
-                android:layout_below="@+id/coffeeshop_openingHours"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/coffeeshop_web"
+        android:layout_below="@+id/coffeeshop_phone"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:textSize="@dimen/venue_address_size"
+        android:textColor="@android:color/black"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/coffeeshop_phone"
-                android:layout_below="@+id/vertical_line2"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:textSize="@dimen/venue_address_size"
-                android:textColor="@android:color/black"/>
+    <View
+        android:layout_width="fill_parent"
+        android:id="@+id/vertical_line3"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:rotation="180"
+        android:background="@android:color/black"
+        android:layout_below="@+id/coffeeshop_web"
+        android:autoLink="web"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/coffeeshop_web"
-                android:layout_below="@+id/coffeeshop_phone"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:textSize="@dimen/venue_address_size"
-                android:textColor="@android:color/black"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vertical_line3"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal" >
 
-            <View
-                android:layout_width="fill_parent"
-                android:id="@+id/vertical_line3"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:rotation="180"
-                android:background="@android:color/black"
-                android:layout_below="@+id/coffeeshop_web"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/twitter_image"
+            android:layout_marginLeft="5dp"
+            android:clickable="true"
+            android:contentDescription="@string/imageview_description"
+            android:background="@drawable/twitter_circle_black_128"/>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/vertical_line3"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:orientation="horizontal" >
-                <!--
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="bottom"
-                -->
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/twitter_image"
-                    android:layout_marginLeft="5dp"
-                    android:contentDescription="@string/imageview_description"
-                    android:background="@mipmap/twitter_circle_black_128"/>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/fbook_image"
+            android:layout_marginLeft="5dp"
+            android:contentDescription="@string/imageview_description"
+            android:background="@drawable/facebook_circle_black_128"/>
 
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/fbook_image"
-                    android:layout_marginLeft="5dp"
-                    android:contentDescription="@string/imageview_description"
-                    android:background="@mipmap/facebook_circle_black_128"/>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/instagram_image"
+            android:layout_marginLeft="5dp"
+            android:clickable="true"
+            android:contentDescription="@string/imageview_description"
+            android:background="@drawable/instagram_circle_black_128"/>
 
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/instagram_image"
-                    android:layout_marginLeft="5dp"
-                    android:contentDescription="@string/imageview_description"
-                    android:background="@mipmap/instagram_circle_black_128"/>
+    </LinearLayout>
 
-            </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
+
 </RelativeLayout>
+</ScrollView>

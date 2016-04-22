@@ -165,12 +165,12 @@ public class CoffeeShop implements Parcelable{
     public void setExtraCoffeeUrl(String extraUrl) {
         this.extraUrl = extraUrl;
     }
-    public float getDistance() {
-        return distance;
-    }
-    public void setDistance(float distance) {
-        this.distance = distance;
-    }
+	public float getDistance() {
+		return distance;
+	}
+	public void setDistance(float distance) {
+		this.distance = distance;
+	}
 
     @Override
     public int describeContents() {

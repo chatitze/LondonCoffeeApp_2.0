@@ -1,7 +1,12 @@
 package com.chatitzemoumin.londoncoffeeapp.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +37,12 @@ public class CoffeeShopDetailFragment extends Fragment{
     private CoffeeShop mCoffeeShop;
 
     private ImageView mImageView;
+    private ImageView mTwitterImageView;
+    private ImageView mInstagramImageView;
+    private ImageView mFacebookImageView;
+
+    private ImageView mHeartImageView;
+
     private ImageFetcher mImageFetcher;
 
     private TextView mCoffeeShopName;
@@ -86,7 +97,7 @@ public class CoffeeShopDetailFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // mImageUrl = getArguments() != null ? getArguments().getString(IMAGE_DATA_EXTRA) : null;
+       // mImageUrl = getArguments() != null ? getArguments().getString(IMAGE_DATA_EXTRA) : null;
 
         Bundle bundle = this.getArguments();
         mCoffeeShop = bundle.getParcelable(COFFEE_SHOP);
@@ -121,6 +132,12 @@ public class CoffeeShopDetailFragment extends Fragment{
         //mImageView.setElevation((float)4.0);
         //mImageView.setTranslationZ((float) 20);
 
+        mTwitterImageView = (ImageView) v.findViewById(R.id.twitter_image);
+        mFacebookImageView = (ImageView) v.findViewById(R.id.fbook_image);
+        mInstagramImageView = (ImageView) v.findViewById(R.id.instagram_image);
+
+        mHeartImageView = (ImageView) v.findViewById(R.id.heart_image);
+
         mCoffeeShopName             = (TextView) v.findViewById(R.id.coffeeshop_name);
         mCoffeeShopAddress          = (TextView) v.findViewById(R.id.coffeeshop_address);
 //        mCoffeeShopRoasters         = (TextView) v.findViewById(R.id.);
@@ -140,6 +157,8 @@ public class CoffeeShopDetailFragment extends Fragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        String phone, webAddress, linkText, twitterAddress, facebookAddress, instagramAddress;
+
         // Use the parent activity to load the image asynchronously into the ImageView (so a single
         // cache can be used over all pages in the ViewPager
         if (CoffeeShopDetailActivity.class.isInstance(getActivity())) {
@@ -155,14 +174,79 @@ public class CoffeeShopDetailFragment extends Fragment{
 
             //mImageLoader.displayImage(mCoffeeShop.getCoffeeUrl(),mImageView);
 
+            // --- Hide the HEART image for now as iy's not used ---
+            mHeartImageView.setVisibility(View.GONE);
 
             mCoffeeShopName.setText(mCoffeeShop.getName());
             mCoffeeShopAddress.setText(mCoffeeShop.getAddress());
             mCoffeeShopComments.setText(mCoffeeShop.getCommentList().get(0).getContent()
-                    +" "+ mCoffeeShop.getCommentList().get(0).getSource());
+                                        +" "+ mCoffeeShop.getCommentList().get(0).getSource());
             mCoffeeShopOpeningHours.setText(mCoffeeShop.getOpeningHours());
-            mCoffeeShopWebAddress.setText("Web      : " + mCoffeeShop.getWebAddress());
-            mCoffeeShopPhone.setText("Phone   : " + mCoffeeShop.getContact().getFormattedPhone());
+
+
+            webAddress = mCoffeeShop.getWebAddress();
+            phone =  mCoffeeShop.getContact().getFormattedPhone();
+            if(webAddress != null && !webAddress.isEmpty()){
+                linkText = "Web      : <a href=\"http://" + webAddress + "\">" + webAddress + "</a>";
+                mCoffeeShopWebAddress.setText(Html.fromHtml(linkText));
+                mCoffeeShopWebAddress.setMovementMethod(LinkMovementMethod.getInstance());
+            }else
+                mCoffeeShopWebAddress.setVisibility(View.GONE);
+            if(phone != null && !phone.isEmpty()){
+                mCoffeeShopPhone.setText("Phone   : " + mCoffeeShop.getContact().getFormattedPhone());
+            } else
+                mCoffeeShopPhone.setVisibility(View.GONE);
+
+
+
+            twitterAddress = mCoffeeShop.getContact().getTwitter();
+            facebookAddress = mCoffeeShop.getContact().getFacebook();
+            instagramAddress = mCoffeeShop.getContact().getInstagram();
+
+            if(twitterAddress != null && !twitterAddress.isEmpty()){
+                mTwitterImageView.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        try{
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" +mCoffeeShop.getContact().getTwitter()));
+                            startActivity(intent);
+
+                        }catch(Exception e){
+                            Log.e("CoffeeShopDetailFragm..", "Error in loading Twitter page");
+                        }
+                    }
+                });
+            }else mTwitterImageView.setVisibility(View.GONE);
+
+            if(instagramAddress != null && !instagramAddress.isEmpty()){
+                mInstagramImageView.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        try{
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" +mCoffeeShop.getContact().getInstagram()));
+                            startActivity(intent);
+
+                        }catch(Exception e){
+                            Log.e("CoffeeShopDetailFragm..", "Error in loading Instagram page");
+                        }
+                    }
+                });
+            }else mInstagramImageView.setVisibility(View.GONE);
+
+            if(facebookAddress != null && !facebookAddress.isEmpty()){
+                mFacebookImageView.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        try{
+                            //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://" + mCoffeeShop.getContact().getFacebook().substring(17)));
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + mCoffeeShop.getContact().getFacebook()));
+                            startActivity(intent);
+
+                        }catch(Exception e){
+                            Log.e("CoffeeShopDetailFragm..", "Error in loading Facebook page");
+                            //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + mCoffeeShop.getContact().getFacebook())));
+                        }
+                    }
+                });
+            }else mFacebookImageView.setVisibility(View.GONE);
+
         }
 
         // Pass clicks on the ImageView to the parent activity to handle

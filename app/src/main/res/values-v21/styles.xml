@@ -1,28 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- your theme inherits from the material theme -->
-    <!--<style name="AppTheme" parent="android:Theme.Material">
-        &lt;!&ndash; Main theme colors &ndash;&gt;
-        &lt;!&ndash;   your app branding color for the app bar &ndash;&gt;
-        <item name="android:colorPrimary">@color/primary</item>
-        &lt;!&ndash;   darker variant for the status bar and contextual app bars &ndash;&gt;
-        <item name="android:colorPrimaryDark">@color/primaryDark</item>
-        &lt;!&ndash;   theme UI controls like checkboxes and text fields &ndash;&gt;
-        <item name="android:colorAccent">@color/accent</item>
+    <!--<style name="AppTheme" parent="android:Theme.Material.Light">
     </style>-->
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
+    <!--<style name="AppBaseTheme" parent="Theme.AppCompat.Light"/>-->
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#202020</item>
+        <item name="colorPrimaryDark">#101010</item>
+        <!--<item name="colorPrimary">#ffff9431</item>
+        <item name="colorPrimaryDark">#ffD56600</item>-->
     </style>
 
+<!--
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#202020</item>
+        <item name="colorPrimaryDark">#101010</item>
+        &lt;!&ndash;<item name="colorPrimary">#ffff9431</item>
+        <item name="colorPrimaryDark">#ffD56600</item>&ndash;&gt;
+    </style>-->
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+    </style>
+
+    <!-- <style name="AppTheme" parent="android:Theme" /> -->
+    <style name="AppTheme.FullScreen" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+    <style name="PhotoGridLayout">
+        <item name="android:drawSelectorOnTop">true</item>
+        <item name="android:listSelector">@drawable/photogrid_list_selector</item>
+    </style>
+
+    <style name="ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:displayOptions">homeAsUp</item>
+    </style>
 </resources>

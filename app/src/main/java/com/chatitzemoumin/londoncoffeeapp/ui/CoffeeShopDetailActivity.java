@@ -1,26 +1,28 @@
 package com.chatitzemoumin.londoncoffeeapp.ui;
 
+/**
+ * Created by Chatitze Moumin on 05/12/14.
+ */
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
-import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
+import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 
+import com.chatitzemoumin.londoncoffeeapp.BuildConfig;
 import com.chatitzemoumin.londoncoffeeapp.R;
 import com.chatitzemoumin.londoncoffeeapp.model.CoffeeShop;
 import com.chatitzemoumin.londoncoffeeapp.util.ImageCache;
@@ -29,13 +31,7 @@ import com.chatitzemoumin.londoncoffeeapp.util.PlatformUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by Chatitzem on 24/12/2015.
- */
-public class CoffeeShopDetailActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String TAG = "CoffeeShopDetailActivity";
-
+public class CoffeeShopDetailActivity extends FragmentActivity implements OnClickListener{
     private static final String IMAGE_CACHE_DIR = "images";
     public static final String VENUE_INDEX = "venue_index";
     public static final String COFFEE_SHOP_LIST = "coffee_shop_list";
@@ -46,33 +42,14 @@ public class CoffeeShopDetailActivity extends AppCompatActivity implements View.
 
     private ArrayList<CoffeeShop> mCoffeeShopList;
 
+    @TargetApi(VERSION_CODES.HONEYCOMB)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        /*if (BuildConfig.DEBUG) {
+    public void onCreate(Bundle savedInstanceState) {
+        if (BuildConfig.DEBUG) {
             PlatformUtils.enableStrictMode();
-        }*/
+        }
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.coffeeshop_detail_pager);
-
-
-//        setContentView(R.layout.activity_coffee_shop_detail);
-/*
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-*/
-
-
-
 
         // Fetch screen height and width, to use as our max size when loading images as this
         // activity runs full screen
@@ -108,13 +85,11 @@ public class CoffeeShopDetailActivity extends AppCompatActivity implements View.
         mPager.setPageMargin((int) getResources().getDimension(R.dimen.image_detail_pager_margin));
         mPager.setOffscreenPageLimit(2);
 
-
         // Set up activity to go full screen
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(LayoutParams.FLAG_FULLSCREEN);
 
         // Enable some additional newer visibility and ActionBar features to create a more
         // immersive photo viewing experience
-
         if (PlatformUtils.hasHoneycomb()) {
             final ActionBar actionBar = getActionBar();
 
@@ -147,7 +122,6 @@ public class CoffeeShopDetailActivity extends AppCompatActivity implements View.
                 actionBar.hide();
             }
 
-
         }
 
         // Set the current item based on the extra passed in to this activity
@@ -155,10 +129,7 @@ public class CoffeeShopDetailActivity extends AppCompatActivity implements View.
         if (extraCurrentItem != -1) {
             mPager.setCurrentItem(extraCurrentItem);
         }
-
-
     }
-
 
     @Override
     public void onResume() {
@@ -196,7 +167,7 @@ public class CoffeeShopDetailActivity extends AppCompatActivity implements View.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_list, menu);
+        getMenuInflater().inflate(R.menu.list_menu, menu);
         return true;
     }
 
@@ -236,7 +207,7 @@ public class CoffeeShopDetailActivity extends AppCompatActivity implements View.
      * Set on the ImageView in the ViewPager children fragments, to enable/disable low profile mode
      * when the ImageView is touched.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @TargetApi(VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View v) {
         final int vis = mPager.getSystemUiVisibility();

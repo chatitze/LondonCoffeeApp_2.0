@@ -12,6 +12,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -29,7 +30,8 @@ import java.util.List;
 public class CoffeeShopFetcher extends AsyncTask<Void,Void,String> {
 
     private static final String TAG = "CoffeeShopFetcher";
-    public static final String SERVER_URL = "http://londoncoffeeapp.com/rest/coffeeshoplist";
+    //public static final String SERVER_URL = "http://londoncoffeeapp.com/rest/coffeeshoplist";
+    public static final String SERVER_URL = "https://www.googleapis.com/drive/v3/files/0B-dHRai0aL42RG5lVVRpeWdaTlU?key=AIzaSyDslVlFnpIMrLRY3h9ePH7b_ZIIw6MhKyo";
 
     private CoffeeShopListActivity myActivity;
 
@@ -50,8 +52,10 @@ public class CoffeeShopFetcher extends AsyncTask<Void,Void,String> {
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost(SERVER_URL);
 
+                HttpGet get = new HttpGet(SERVER_URL);
+
                 //Perform the request and check the status code
-                HttpResponse response = client.execute(post);
+                HttpResponse response = client.execute(get);
                 StatusLine statusLine = response.getStatusLine();
                 if(statusLine.getStatusCode() == 200){
                     HttpEntity entity = response.getEntity();
@@ -71,7 +75,7 @@ public class CoffeeShopFetcher extends AsyncTask<Void,Void,String> {
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.setDateFormat("M/d/yy hh:mm a");
                 Gson gson = gsonBuilder.create();
-                List<CoffeeShop> coffeeShops = new ArrayList<CoffeeShop>(Arrays.asList(gson.fromJson(reader, CoffeeShop[].class)));
+                List<CoffeeShop> coffeeShops = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CoffeeShop[].class)));
                 content.close();
 
                 myActivity.handleCoffeeShopList(coffeeShops);
@@ -109,7 +113,7 @@ public class CoffeeShopFetcher extends AsyncTask<Void,Void,String> {
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.setDateFormat("M/d/yy hh:mm a");
                     Gson gson = gsonBuilder.create();
-                    List<CoffeeShop> coffeeShopList = new ArrayList<CoffeeShop>();
+                    List<CoffeeShop> coffeeShopList = new ArrayList<>();
                     coffeeShopList = Arrays.asList(gson.fromJson(reader, CoffeeShop[].class));
                     content.close();
 
