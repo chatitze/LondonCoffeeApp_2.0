@@ -20,21 +20,21 @@ public class CoffeeShop implements Parcelable{
     private String rating;
     private double lat;
     private double lng;
-    private String category;
+    //private String category;
     private String roaster;
-    private String machine;
-    private String grinder;
-    private String brewMethods;
+    //private String machine;
+    //private String grinder;
+    //private String brewMethods;
     private String webAddress;
     private Contact contact;
     private String openingHours;
-    private String owner;
+    //private String owner;
     @SerializedName("comments")
     private List<Comment> commentList = new ArrayList<Comment>();
     private String venueUrl;
     private String coffeeUrl;
-    private String extraUrl;
-    private String extraCoffeeUrl;
+    //private String extraUrl;
+    //private String extraCoffeeUrl;
 
     private float distance = -1;
 
@@ -81,19 +81,19 @@ public class CoffeeShop implements Parcelable{
     public void setLng(double lng) {
         this.lng = lng;
     }
-    public String getCategory() {
+    /*public String getCategory() {
         return category;
     }
     public void setCategory(String category) {
         this.category = category;
-    }
+    }*/
     public String getRoaster() {
         return roaster;
     }
     public void setRoaster(String roaster) {
         this.roaster = roaster;
     }
-    public String getMachine() {
+    /*public String getMachine() {
         return machine;
     }
     public void setMachine(String machine) {
@@ -110,7 +110,7 @@ public class CoffeeShop implements Parcelable{
     }
     public void setBrewMethods(String brewMethods) {
         this.brewMethods = brewMethods;
-    }
+    }*/
     public String getWebAddress() {
         return webAddress;
     }
@@ -129,12 +129,12 @@ public class CoffeeShop implements Parcelable{
     public void setOpeningHours(String openingHours) {
         this.openingHours = openingHours;
     }
-    public String getOwner() {
+    /*public String getOwner() {
         return owner;
     }
     public void setOwner(String owner) {
         this.owner = owner;
-    }
+    }*/
     public List<Comment> getCommentList() {
         return commentList;
     }
@@ -153,7 +153,7 @@ public class CoffeeShop implements Parcelable{
     public void setCoffeeUrl(String coffeeUrl) {
         this.coffeeUrl = coffeeUrl;
     }
-    public String getExtraUrl() {
+    /*public String getExtraUrl() {
         return extraUrl;
     }
     public void setExtraUrl(String extraUrl) {
@@ -164,7 +164,7 @@ public class CoffeeShop implements Parcelable{
     }
     public void setExtraCoffeeUrl(String extraUrl) {
         this.extraUrl = extraUrl;
-    }
+    }*/
 	public float getDistance() {
 		return distance;
 	}
@@ -186,16 +186,16 @@ public class CoffeeShop implements Parcelable{
         dest.writeString(rating);
         dest.writeString(coffeeUrl);
         dest.writeString(venueUrl);
-        dest.writeString(extraUrl);
-        dest.writeString(extraCoffeeUrl);
-        dest.writeString(category);
+        //dest.writeString(extraUrl);
+        //dest.writeString(extraCoffeeUrl);
+        //dest.writeString(category);
         dest.writeString(roaster);
-        dest.writeString(machine);
-        dest.writeString(grinder);
+        //dest.writeString(machine);
+        //dest.writeString(grinder);
         dest.writeString(webAddress);
-        dest.writeString(owner);
+        //dest.writeString(owner);
         dest.writeString(openingHours);
-        dest.writeString(brewMethods);
+        //dest.writeString(brewMethods);
 
         dest.writeInt(id);
 
@@ -215,16 +215,16 @@ public class CoffeeShop implements Parcelable{
         this.rating = in.readString();
         this.coffeeUrl = in.readString();
         this.venueUrl = in.readString();
-        this.extraUrl = in.readString();
-        this.extraCoffeeUrl = in.readString();
-        this.category = in.readString();
+        //this.extraUrl = in.readString();
+        //this.extraCoffeeUrl = in.readString();
+        //this.category = in.readString();
         this.roaster = in.readString();
-        this.machine = in.readString();
-        this.grinder = in.readString();
+        //this.machine = in.readString();
+        //this.grinder = in.readString();
         this.webAddress = in.readString();
-        this.owner = in.readString();
+        //this.owner = in.readString();
         this.openingHours = in.readString();
-        this.brewMethods = in.readString();
+        //this.brewMethods = in.readString();
 
         this.id = in.readInt();
 
