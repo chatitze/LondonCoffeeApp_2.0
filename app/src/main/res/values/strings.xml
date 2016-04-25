@@ -5,8 +5,9 @@
     <string name="app_description">List of best coffee shops in London
         &quot;London Coffee App for coffee lovers&quot;</string>
 
-    <string name="google_app_id">prefab-breaker-433</string>
+    <!--<string name="google_app_id">prefab-breaker-433</string>-->
 
+    <string name="send_invitation_menu">Invite friends to try LCA</string>
     <string name="clear_cache_menu">Clear Caches</string>
     <string name="show_map_menu">Show Map</string>
     <string name="show_list_menu">Show Map</string>
@@ -21,6 +22,23 @@
 
     <string name="action_expand">Pull up to show the list</string>
     <string name="action_collapse">Pull down to hide the list</string>
+
+    <string name="invitation_title">Send LCA Invitation</string>
+    <string name="invitation_message">Hey Dude, London Coffee App is terrific, give it a try!</string>
+    <string name="invitation_deep_link">http://example.com/offer/five_dollar_offer</string>
+    <string name="invitation_custom_image">https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png</string>
+    <string name="invitation_cta">Install</string>
+    <string name="sent_invitations_fmt" formatted="false">Sent %d invitations</string>
+    <string name="send_failed">Sending invitations failed</string>
+<!--
+    <string name="invitation_subject">Try this great app!</string>
+    <string name="deep_link_fmt" formatted="false">Deep Link: %s</string>
+    <string name="invitation_id_fmt" formatted="false">Invitation ID: %s</string>
+    <string name="invite_dialog_title">You got an invitation!</string>
+-->
+
+
+    <string name="google_play_services_error">Google Play Services Error</string>
 
     <string name="hello"><![CDATA[<b>The Awesome Sliding Up Panel</b><br/> Brought to you by<br/><a href="http://umanoapp.com">http://umanoapp.com</a>]]></string>
     <string name="follow"><![CDATA[Follow us<br/>on <a href="http://twitter.com/umanoapp">Twitter</a>]]></string>

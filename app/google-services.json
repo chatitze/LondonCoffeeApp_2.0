@@ -1,0 +1,52 @@
+{
+  "project_info": {
+    "project_id": "prefab-breaker-433",
+    "project_number": "165467376152",
+    "name": "MyAndroidProjects"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165467376152:android:3ce656e99ef4d2b4",
+        "client_id": "android:com.chatitzemoumin.londoncoffeeapp",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.chatitzemoumin.londoncoffeeapp",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165467376152-pn5he9suaa5fejp56db2ppe1pha7btu1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chatitzemoumin.londoncoffeeapp",
+            "certificate_hash": "72CF30C3FBB3AC3EECB2580DB5F4FB6D097D1217"
+          }
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

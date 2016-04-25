@@ -10,6 +10,12 @@
         app:showAsAction="ifRoom"
         android:title="@string/show_map_menu"/>
     -->
+
+    <item
+        android:id="@+id/send_invitation"
+        app:showAsAction="never"
+        android:title="@string/send_invitation_menu"/>
+
     <item
         android:id="@+id/clear_cache"
         android:icon="@android:drawable/ic_menu_delete"
