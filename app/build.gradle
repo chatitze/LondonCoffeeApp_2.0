@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "com.chatitzemoumin.londoncoffeeapp"
         minSdkVersion 16
-        targetSdkVersion 21
-        versionCode 9
-        versionName "2.0.1"
+        targetSdkVersion 23
+        versionCode 10
+        versionName "2.1.0"
     }
 
     buildTypes {
